@@ -23,11 +23,17 @@
  Contributions by Paul Bouchier and Benjamin.soelberg
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/* REVISION: Added callback ability. When a callback is assigned to
+	an instance with constructor it is called when check function
+	state is True
+*/
+
 #ifndef Metro_h
 #define Metro_h
 
 #include <inttypes.h>
 
+typedef void MetroCallback(void);
 
 class Metro
 {
@@ -35,13 +41,14 @@ class Metro
 public:
   Metro();
   Metro(unsigned long interval_millis);
+  Metro(unsigned long interval_millis, MetroCallback *cbfunction);
   void interval(unsigned long interval_millis);
   uint8_t check();
   void reset();
 	
 private:
   unsigned long  previous_millis, interval_millis;
-
+  MetroCallback* _callback;
 };
 
 #endif
