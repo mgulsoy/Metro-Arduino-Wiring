@@ -8,20 +8,23 @@
 #include "Metro.h"
 
 Metro::Metro()
-{
-	
-	this->interval_millis = 1000;
-	
+{	
+	this->interval_millis = 1000;	
+	this->_callback = NULL;
 }
 
 
 Metro::Metro(unsigned long interval_millis)
-{
-	
+{	
 	this->interval_millis = interval_millis;
-	
+	this->_callback = NULL;
 }
 
+Metro::Metro(unsigned long interval_millis, MetroCallback *cbfunction)
+{	
+	this->interval_millis = interval_millis;
+	this->_callback = cbfunction;
+}
 
 void Metro::interval(unsigned long interval_millis)
 {
@@ -35,6 +38,7 @@ uint8_t Metro::check()
   
   if ( interval_millis == 0 ){
     previous_millis = now;
+    if (this->_callback != NULL) this->_callback();
 	return 1;
   }
  
@@ -44,6 +48,7 @@ uint8_t Metro::check()
 	#else
 	previous_millis += interval_millis ; 
 	 #endif
+    if (this->_callback != NULL) this->_callback();
     return 1;
   }
   
